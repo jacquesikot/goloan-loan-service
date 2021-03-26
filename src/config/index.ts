@@ -8,4 +8,5 @@ if (envFound.error && process.env.NODE_ENV === 'development') {
 export default {
   port: parseInt(process.env.PORT, 3000),
   masterKey: process.env.MASTER_KEY ? process.env.MASTER_KEY : '',
+  paystackApiKey: process.env.PAYSTACK_API_KEY ? process.env.PAYSTACK_API_KEY : '',
 };

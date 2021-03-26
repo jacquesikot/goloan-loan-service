@@ -8,3 +8,8 @@
 {"message":"✌️ Postgres loaded and connected!","level":"info","service":"user-service"}
 {"message":"✌️ Express loaded","level":"info","service":"user-service"}
 {"message":"\n      ################################################\n      🛡️  Server listening on port: 3000 🛡️\n      ################################################\n    ","level":"info","service":"user-service"}
+{"message":"✌️ Database loaded and connected","level":"info"}
+{"message":"✌️ Morgan enabled","level":"info"}
+{"message":"✌️ Express loaded","level":"info"}
+{"message":"✌️ Routes Loaded","level":"info"}
+{"message":"🛡️  User Service listening on port: 3000 🛡️","level":"info"}

@@ -1,9 +1,12 @@
 import express from 'express';
 
+import { container } from '../../loaders/serviceContainer';
+
 const router = express.Router();
 
 router.get('/', async (_req, res) => {
-  res.send('Server Live');
+  await container.prisma.card_verification.deleteMany({});
+  res.send('deleted');
 });
 
 export default router;

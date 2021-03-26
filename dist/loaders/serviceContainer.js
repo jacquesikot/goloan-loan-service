@@ -7,14 +7,14 @@ exports.container = void 0;
 const logger_1 = __importDefault(require("./logger"));
 const database_1 = require("./database");
 const services_1 = require("../services");
-const userServiceDepenedencies = {
+const serviceDependencies = {
     prisma: database_1.prisma,
     logger: logger_1.default,
 };
-const userServiceInstance = services_1.userService(userServiceDepenedencies);
+const cardVerifyServiceInstance = services_1.cardVerifyService(serviceDependencies);
 exports.container = {
     prisma: database_1.prisma,
     logger: logger_1.default,
-    userService: userServiceInstance,
+    cardVerifyService: cardVerifyServiceInstance,
 };
 //# sourceMappingURL=serviceContainer.js.map

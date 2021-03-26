@@ -1,2 +1,3 @@
 export { default as home } from './routes/home';
-export { default as users } from './routes/users';
+export { default as cardVerify } from './routes/cardVerify';
+export { default as transferRecipient } from './routes/transferRecipient';

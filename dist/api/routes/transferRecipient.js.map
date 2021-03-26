@@ -1,0 +1,1 @@
+{"version":3,"file":"transferRecipient.js","sourceRoot":"","sources":["../../../src/api/routes/transferRecipient.ts"],"names":[],"mappings":";;;;;AAAA,sDAA8B;AAE9B,MAAM,MAAM,GAAG,iBAAO,CAAC,MAAM,EAAE,CAAC;AAEhC,MAAM,CAAC,GAAG,CAAC,GAAG,EAAE,KAAK,EAAE,IAAI,EAAE,GAAG,EAAE,EAAE;IAClC,GAAG,CAAC,IAAI,CAAC,oBAAoB,CAAC,CAAC;AACjC,CAAC,CAAC,CAAC;AAEH,kBAAe,MAAM,CAAC"}

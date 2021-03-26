@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const collection = (data, offset, per_page) => {
     const response = {
         type: 'collection',
@@ -16,7 +17,7 @@ const single = (data) => {
         type: 'single',
         error: null,
         error_human: null,
-        data: Object.assign({}, data),
+        data: { ...data },
     };
     return response;
 };

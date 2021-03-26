@@ -6,16 +6,14 @@ const errorMessage = {
     internalServerError: 'Oops, something went wrong. Internal Server Error',
     invalidMasterKey: 'Invalid master key',
     noMasterKey: 'No master key provided',
-    userAlreadyRegistered: 'User with the given ID is already regisered',
-    userDoesNotExist: 'User with given ID does not exist',
 };
 exports.errorMessage = errorMessage;
 const errorEnvelope = {
     invalidRequest: (error) => {
         return {
-            message: error[0].message,
-            field: error[0].context.label,
-            type: error[0].type,
+            message: error.details[0].message,
+            field: error.details[0].context.label,
+            type: error.details[0].type,
         };
     },
     genericError: (message, code) => {

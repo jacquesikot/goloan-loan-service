@@ -1,2 +1,2 @@
-export { default as IUser } from './userInterface';
-export { default as IUserService } from './userServiceInterface';
+export { default as IServiceInterface } from './serviceInterface';
+export { default as ICardInit } from './cardInitInterface';

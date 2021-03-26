@@ -2,6 +2,7 @@
 CREATE TABLE "card_verification" (
     "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
     "user_id" VARCHAR(200) NOT NULL,
+    "authorization_url" VARCHAR(200) NOT NULL,
     "access_code" VARCHAR(200) NOT NULL,
     "reference" VARCHAR(200) NOT NULL,
     "verified" BOOLEAN,
@@ -31,3 +32,15 @@ CREATE TABLE "card_authorization" (
 
     PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "card_verification.user_id_unique" ON "card_verification"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "card_verification.reference_unique" ON "card_verification"("reference");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "card_authorization.user_id_unique" ON "card_authorization"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "card_authorization.authorization_code_unique" ON "card_authorization"("authorization_code");

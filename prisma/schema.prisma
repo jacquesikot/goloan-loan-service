@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user_account {
+  id             String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id        String  @db.Uuid
+  account_name   String  @db.VarChar(50)
+  account_number String  @db.VarChar(50)
+  account_bank   String  @db.VarChar(50)
+  created_at     String  @db.VarChar(50)
+  updated_at     String? @db.VarChar(50)
+  users          users   @relation(fields: [user_id], references: [id])
+
+  @@index([user_id], name: "fkidx_32")
+}
+
+model user_card {
+  id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id     String  @db.Uuid
+  card_name   String  @db.VarChar(50)
+  card_number String  @db.VarChar(50)
+  card_cvv    String  @db.VarChar(50)
+  card_expiry String  @db.VarChar(50)
+  created_at  String  @db.VarChar(50)
+  updated_at  String? @db.VarChar(50)
+  users       users   @relation(fields: [user_id], references: [id])
+
+  @@index([user_id], name: "fkidx_26")
+}
+
+model users {
+  id           String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  first_name   String         @db.VarChar(50)
+  last_name    String         @db.VarChar(50)
+  phone_number String         @db.VarChar(50)
+  email        String         @unique @db.VarChar(50)
+  corporate_id String?        @unique @db.VarChar(50)
+  gender       String         @db.VarChar(50)
+  bvn          String         @db.VarChar(50)
+  user_type    String         @db.VarChar(50)
+  created_at   String         @db.VarChar(50)
+  updated_at   String?        @db.VarChar(50)
+  password     String         @db.VarChar(1050)
+  pin          String         @db.VarChar(1050)
+  last_login   String?        @db.VarChar(50)
+  modified     String?        @db.VarChar(500)
+  user_account user_account[]
+  user_card    user_card[]
+}
+
+model corporate_entity {
+  id           String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name         String  @db.VarChar(50)
+  phone_number String  @db.VarChar(50)
+  email        String  @unique @db.VarChar(50)
+  created_at   String  @db.VarChar(50)
+  updated_at   String? @db.VarChar(50)
+  modified     String? @db.VarChar(500)
+}

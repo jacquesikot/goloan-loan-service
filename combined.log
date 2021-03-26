@@ -1,0 +1,10 @@
+{"message":"✌️ Postgres loaded and connected!","level":"info","service":"user-service"}
+{"message":"✌️ Express loaded","level":"info","service":"user-service"}
+{"message":"\n      ################################################\n      🛡️  Server listening on port: 3000 🛡️\n      ################################################\n    ","level":"info","service":"user-service"}
+{"message":"✌️ Postgres loaded and connected!","level":"info","service":"user-service"}
+{"message":"✌️ Express loaded","level":"info","service":"user-service"}
+{"message":"\n      ################################################\n      🛡️  Server listening on port: 3000 🛡️\n      ################################################\n    ","level":"info","service":"user-service"}
+{"message":"Postgres loading Error","level":"error","service":"user-service"}
+{"message":"✌️ Postgres loaded and connected!","level":"info","service":"user-service"}
+{"message":"✌️ Express loaded","level":"info","service":"user-service"}
+{"message":"\n      ################################################\n      🛡️  Server listening on port: 3000 🛡️\n      ################################################\n    ","level":"info","service":"user-service"}

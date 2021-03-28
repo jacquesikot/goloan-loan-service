@@ -10,7 +10,9 @@ const loaders_1 = require("./loaders");
 const config_1 = __importDefault(require("./config"));
 const middlewares_1 = require("./middlewares");
 const app = express_1.default();
+// Try to get agenda to load before server starts
 require('./loaders/database').default();
+require('./loaders/agenda').default();
 require('./loaders/express').default(app);
 require('./loaders/routes').default(app);
 app.use(middlewares_1.error);

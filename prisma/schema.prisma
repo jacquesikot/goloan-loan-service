@@ -35,3 +35,23 @@ model card_authorization {
   country_code       String @db.VarChar(50)
   account_name       String @db.VarChar(50)
 }
+
+model transfer_recipient {
+  id             String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id        String  @unique @db.VarChar(200)
+  type           String  @db.VarChar(50)
+  account_number String  @unique @db.VarChar(11)
+  bank_code      String  @db.VarChar(3)
+  currency       String  @db.VarChar(5)
+  created_at     String  @db.VarChar(50)
+  updated_at     String? @db.VarChar(50)
+  modified       String? @db.VarChar(500)
+}
+
+model loan {
+  id          String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id     String @unique @db.VarChar(200)
+  loan_amount String @db.VarChar(50)
+  due_date    String @db.VarChar(50)
+  created_at  String @db.VarChar(50)
+}

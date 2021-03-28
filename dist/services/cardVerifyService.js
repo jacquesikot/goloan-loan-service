@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const config_1 = __importDefault(require("../config"));
-const cardVerifyService = ({ logger, prisma }) => {
+// TODO: Refactor this service
+const cardVerifyService = ({ logger, prisma, agenda }) => {
     const options = {
         headers: {
             Authorization: config_1.default.paystackApiKey,
@@ -47,6 +48,9 @@ const cardVerifyService = ({ logger, prisma }) => {
                         modified: modifiedValue(),
                     },
                 });
+                await agenda.schedule('in 3 second', [config_1.default.agendaJobs.refundInitAmount], {
+                    user_id,
+                });
                 return {
                     authorization_url: paystackResponse.authorization_url,
                 };
@@ -56,7 +60,7 @@ const cardVerifyService = ({ logger, prisma }) => {
                 const userData = user.data.data;
                 const data = {
                     email: userData.email,
-                    amount: '5000',
+                    amount: config_1.default.initChargeAmount,
                 };
                 const response = await axios_1.default.post(config_1.default.paystackUrls.initializeTransaction, data, options);
                 const paystackResponse = response.data.data;
@@ -69,6 +73,9 @@ const cardVerifyService = ({ logger, prisma }) => {
                         verified: false,
                         created_at: new Date().toISOString(),
                     },
+                });
+                await agenda.schedule('in 3 second', [config_1.default.agendaJobs.refundInitAmount], {
+                    user_id,
                 });
                 return {
                     authorization_url: paystackResponse.authorization_url,

@@ -33,6 +33,32 @@ CREATE TABLE "card_authorization" (
     PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "transfer_recipient" (
+    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+    "user_id" VARCHAR(200) NOT NULL,
+    "type" VARCHAR(50) NOT NULL,
+    "account_number" VARCHAR(11) NOT NULL,
+    "bank_code" VARCHAR(3) NOT NULL,
+    "currency" VARCHAR(5) NOT NULL,
+    "created_at" VARCHAR(50) NOT NULL,
+    "updated_at" VARCHAR(50),
+    "modified" VARCHAR(500),
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "loan" (
+    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+    "user_id" VARCHAR(200) NOT NULL,
+    "loan_amount" VARCHAR(50) NOT NULL,
+    "due_date" VARCHAR(50) NOT NULL,
+    "created_at" VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "card_verification.user_id_unique" ON "card_verification"("user_id");
 
@@ -44,3 +70,12 @@ CREATE UNIQUE INDEX "card_authorization.user_id_unique" ON "card_authorization"(
 
 -- CreateIndex
 CREATE UNIQUE INDEX "card_authorization.authorization_code_unique" ON "card_authorization"("authorization_code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "transfer_recipient.user_id_unique" ON "transfer_recipient"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "transfer_recipient.account_number_unique" ON "transfer_recipient"("account_number");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "loan.user_id_unique" ON "loan"("user_id");

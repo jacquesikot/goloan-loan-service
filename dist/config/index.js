@@ -18,10 +18,18 @@ exports.default = {
     goloanUserService: process.env.GOLOAN_USER_SERVICE
         ? process.env.GOLOAN_USER_SERVICE
         : '',
+    agendaDb: process.env.AGENDA_MONGODB_URL
+        ? process.env.AGENDA_MONGODB_URL
+        : '',
+    initChargeAmount: '5000',
     paystackUrls: {
         initializeTransaction: 'https://api.paystack.co/transaction/initialize',
         verifyTransaction: 'https://api.paystack.co/transaction/verify/',
         transferRecipient: 'https://api.paystack.co/transferrecipient',
+        resolveAccountNumber: 'https://api.paystack.co/bank/resolve?',
+    },
+    agendaJobs: {
+        refundInitAmount: 'refund init amount',
     },
 };
 //# sourceMappingURL=index.js.map

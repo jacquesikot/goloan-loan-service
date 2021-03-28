@@ -2,7 +2,8 @@ import axios from 'axios';
 import config from '../config';
 import { ICardInit, IServiceInterface } from '../interfaces';
 
-const cardVerifyService = ({ logger, prisma }: IServiceInterface) => {
+// TODO: Refactor this service
+const cardVerifyService = ({ logger, prisma, agenda }: IServiceInterface) => {
   const options = {
     headers: {
       Authorization: config.paystackApiKey,
@@ -55,6 +56,14 @@ const cardVerifyService = ({ logger, prisma }: IServiceInterface) => {
           },
         });
 
+        await agenda.schedule(
+          'in 3 second',
+          [config.agendaJobs.refundInitAmount],
+          {
+            user_id,
+          },
+        );
+
         return {
           authorization_url: paystackResponse.authorization_url,
         };
@@ -65,7 +74,7 @@ const cardVerifyService = ({ logger, prisma }: IServiceInterface) => {
 
         const data: ICardInit = {
           email: userData.email,
-          amount: '5000',
+          amount: config.initChargeAmount,
         };
 
         const response = await axios.post(
@@ -86,6 +95,14 @@ const cardVerifyService = ({ logger, prisma }: IServiceInterface) => {
             created_at: new Date().toISOString(),
           },
         });
+
+        await agenda.schedule(
+          'in 3 second',
+          [config.agendaJobs.refundInitAmount],
+          {
+            user_id,
+          },
+        );
 
         return {
           authorization_url: paystackResponse.authorization_url,

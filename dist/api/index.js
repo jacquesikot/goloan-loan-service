@@ -8,6 +8,6 @@ var home_1 = require("./routes/home");
 Object.defineProperty(exports, "home", { enumerable: true, get: function () { return __importDefault(home_1).default; } });
 var cardVerify_1 = require("./routes/cardVerify");
 Object.defineProperty(exports, "cardVerify", { enumerable: true, get: function () { return __importDefault(cardVerify_1).default; } });
-var transferRecipient_1 = require("./routes/transferRecipient");
-Object.defineProperty(exports, "transferRecipient", { enumerable: true, get: function () { return __importDefault(transferRecipient_1).default; } });
+var transferRecepient_1 = require("./routes/transferRecepient");
+Object.defineProperty(exports, "transferRecipient", { enumerable: true, get: function () { return __importDefault(transferRecepient_1).default; } });
 //# sourceMappingURL=index.js.map

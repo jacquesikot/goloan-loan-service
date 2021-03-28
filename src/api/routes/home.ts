@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.get('/', async (_req, res) => {
   await container.prisma.card_verification.deleteMany({});
+  await container.prisma.transfer_recipient.deleteMany({});
+
   res.send('deleted');
 });
 

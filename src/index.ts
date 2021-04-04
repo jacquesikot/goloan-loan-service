@@ -10,7 +10,6 @@ const app = express();
 
 // Try to get agenda to load before server starts
 require('./loaders/database').default();
-require('./loaders/agenda').default();
 require('./loaders/express').default(app);
 require('./loaders/routes').default(app);
 

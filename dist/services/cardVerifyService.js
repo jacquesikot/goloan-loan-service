@@ -7,12 +7,6 @@ const axios_1 = __importDefault(require("axios"));
 const config_1 = __importDefault(require("../config"));
 // TODO: Refactor this service
 const cardVerifyService = ({ logger, prisma, agenda }) => {
-    const options = {
-        headers: {
-            Authorization: config_1.default.paystackApiKey,
-            'Content-Type': 'application/json',
-        },
-    };
     const initiateCardVerification = async (user_id) => {
         try {
             const foundVerification = await prisma.card_verification.findUnique({
@@ -25,9 +19,14 @@ const cardVerifyService = ({ logger, prisma, agenda }) => {
                 const userData = user.data.data;
                 const data = {
                     email: userData.email,
-                    amount: '5000',
+                    amount: config_1.default.initChargeAmount,
                 };
-                const response = await axios_1.default.post(config_1.default.paystackUrls.initializeTransaction, data, options);
+                const response = await axios_1.default.post(config_1.default.paystackUrls.initializeTransaction, data, {
+                    headers: {
+                        Authorization: config_1.default.paystackApiKey,
+                        'Content-Type': 'application/json',
+                    },
+                });
                 const paystackResponse = response.data.data;
                 const modifiedValue = () => {
                     if (foundVerification.modified !== null) {
@@ -44,13 +43,18 @@ const cardVerifyService = ({ logger, prisma, agenda }) => {
                     data: {
                         authorization_url: paystackResponse.authorization_url,
                         access_code: paystackResponse.access_code,
+                        reference: paystackResponse.reference,
                         updated_at: new Date().toISOString(),
                         modified: modifiedValue(),
                     },
                 });
-                await agenda.schedule('in 3 second', [config_1.default.agendaJobs.refundInitAmount], {
-                    user_id,
-                });
+                // await agenda.schedule(
+                //   'in 1 minute',
+                //   [config.agendaJobs.refundInitAmount],
+                //   {
+                //     reference: paystackResponse.reference,
+                //   },
+                // );
                 return {
                     authorization_url: paystackResponse.authorization_url,
                 };
@@ -62,28 +66,37 @@ const cardVerifyService = ({ logger, prisma, agenda }) => {
                     email: userData.email,
                     amount: config_1.default.initChargeAmount,
                 };
-                const response = await axios_1.default.post(config_1.default.paystackUrls.initializeTransaction, data, options);
+                const response = await axios_1.default.post(config_1.default.paystackUrls.initializeTransaction, data, {
+                    headers: {
+                        Authorization: config_1.default.paystackApiKey,
+                        'Content-Type': 'application/json',
+                    },
+                });
                 const paystackResponse = response.data.data;
                 await prisma.card_verification.create({
                     data: {
                         user_id: userData.id,
                         authorization_url: paystackResponse.authorization_url,
                         access_code: paystackResponse.access_code,
-                        reference: `REF/INIT/${Date.now().toString()}/${user_id}`,
+                        reference: paystackResponse.reference,
                         verified: false,
                         created_at: new Date().toISOString(),
                     },
                 });
-                await agenda.schedule('in 3 second', [config_1.default.agendaJobs.refundInitAmount], {
-                    user_id,
-                });
+                // await agenda.schedule(
+                //   'in 1 minute',
+                //   [config.agendaJobs.refundInitAmount],
+                //   {
+                //     reference: paystackResponse.reference,
+                //   },
+                // );
                 return {
                     authorization_url: paystackResponse.authorization_url,
                 };
             }
         }
         catch (error) {
-            logger.info(error);
+            logger.error(error);
         }
     };
     const getVerifications = async () => {

@@ -6,8 +6,13 @@ import { Request, Response, NextFunction } from 'express';
 import { logger } from '../loaders';
 import { errorEnvelope, errorMessage } from '../constants';
 
-export default (error: any, _req: Request, res: Response, _next: NextFunction) => {
-  logger.error(error);
+export default (
+  error: any,
+  _req: Request,
+  res: Response,
+  _next: NextFunction,
+) => {
+  console.log(error);
   res.status(500);
   res.json(errorEnvelope.genericError(errorMessage.internalServerError, 500));
   return;

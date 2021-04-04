@@ -6,6 +6,10 @@ const errorMessage = {
     internalServerError: 'Oops, something went wrong. Internal Server Error',
     invalidMasterKey: 'Invalid master key',
     noMasterKey: 'No master key provided',
+    noTransferRecepient: 'Sorry, user does not have a bank account set',
+    transferRecepientExists: 'User already has account set',
+    wrongAccountDetails: 'Account details provided are not correct',
+    userDoesNotExist: 'User given does not exist',
 };
 exports.errorMessage = errorMessage;
 const errorEnvelope = {

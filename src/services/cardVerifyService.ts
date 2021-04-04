@@ -4,13 +4,6 @@ import { ICardInit, IServiceInterface } from '../interfaces';
 
 // TODO: Refactor this service
 const cardVerifyService = ({ logger, prisma, agenda }: IServiceInterface) => {
-  const options = {
-    headers: {
-      Authorization: config.paystackApiKey,
-      'Content-Type': 'application/json',
-    },
-  };
-
   const initiateCardVerification = async (user_id: string) => {
     try {
       const foundVerification = await prisma.card_verification.findUnique({
@@ -26,13 +19,18 @@ const cardVerifyService = ({ logger, prisma, agenda }: IServiceInterface) => {
 
         const data: ICardInit = {
           email: userData.email,
-          amount: '5000',
+          amount: config.initChargeAmount,
         };
 
         const response = await axios.post(
           config.paystackUrls.initializeTransaction,
           data,
-          options,
+          {
+            headers: {
+              Authorization: config.paystackApiKey,
+              'Content-Type': 'application/json',
+            },
+          },
         );
 
         const paystackResponse = response.data.data;
@@ -51,18 +49,19 @@ const cardVerifyService = ({ logger, prisma, agenda }: IServiceInterface) => {
           data: {
             authorization_url: paystackResponse.authorization_url,
             access_code: paystackResponse.access_code,
+            reference: paystackResponse.reference,
             updated_at: new Date().toISOString(),
             modified: modifiedValue(),
           },
         });
 
-        await agenda.schedule(
-          'in 3 second',
-          [config.agendaJobs.refundInitAmount],
-          {
-            user_id,
-          },
-        );
+        // await agenda.schedule(
+        //   'in 1 minute',
+        //   [config.agendaJobs.refundInitAmount],
+        //   {
+        //     reference: paystackResponse.reference,
+        //   },
+        // );
 
         return {
           authorization_url: paystackResponse.authorization_url,
@@ -80,7 +79,12 @@ const cardVerifyService = ({ logger, prisma, agenda }: IServiceInterface) => {
         const response = await axios.post(
           config.paystackUrls.initializeTransaction,
           data,
-          options,
+          {
+            headers: {
+              Authorization: config.paystackApiKey,
+              'Content-Type': 'application/json',
+            },
+          },
         );
 
         const paystackResponse = response.data.data;
@@ -90,26 +94,26 @@ const cardVerifyService = ({ logger, prisma, agenda }: IServiceInterface) => {
             user_id: userData.id,
             authorization_url: paystackResponse.authorization_url,
             access_code: paystackResponse.access_code,
-            reference: `REF/INIT/${Date.now().toString()}/${user_id}`,
+            reference: paystackResponse.reference,
             verified: false,
             created_at: new Date().toISOString(),
           },
         });
 
-        await agenda.schedule(
-          'in 3 second',
-          [config.agendaJobs.refundInitAmount],
-          {
-            user_id,
-          },
-        );
+        // await agenda.schedule(
+        //   'in 1 minute',
+        //   [config.agendaJobs.refundInitAmount],
+        //   {
+        //     reference: paystackResponse.reference,
+        //   },
+        // );
 
         return {
           authorization_url: paystackResponse.authorization_url,
         };
       }
     } catch (error) {
-      logger.info(error);
+      logger.error(error);
     }
   };
 

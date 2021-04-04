@@ -14,26 +14,27 @@ model card_verification {
   access_code       String   @db.VarChar(200)
   reference         String   @unique @db.VarChar(200)
   verified          Boolean?
+  refund_init       Boolean?
   created_at        String   @db.VarChar(50)
   updated_at        String?  @db.VarChar(50)
   modified          String?  @db.VarChar(500)
 }
 
 model card_authorization {
-  id                 String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  user_id            String @unique @db.VarChar(200)
-  authorization_code String @unique @db.VarChar(50)
-  card_type          String @db.VarChar(50)
-  last4              String @db.VarChar(4)
-  exp_month          String @db.VarChar(3)
-  exp_year           String @db.VarChar(4)
-  bin                String @db.VarChar(6)
-  bank               String @db.VarChar(50)
-  channel            String @db.VarChar(50)
-  signature          String @db.VarChar(50)
-  reusable           String @db.VarChar(50)
-  country_code       String @db.VarChar(50)
-  account_name       String @db.VarChar(50)
+  id                 String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id            String   @unique @db.VarChar(200)
+  authorization_code String   @unique @db.VarChar(50)
+  card_type          String   @db.VarChar(50)
+  last4              String   @db.VarChar(4)
+  exp_month          String   @db.VarChar(3)
+  exp_year           String   @db.VarChar(4)
+  bin                String   @db.VarChar(6)
+  bank               String   @db.VarChar(50)
+  channel            String   @db.VarChar(50)
+  signature          String   @db.VarChar(50)
+  reusable           Boolean?
+  country_code       String   @db.VarChar(50)
+  account_name       String   @db.VarChar(50)
 }
 
 model transfer_recipient {
@@ -41,7 +42,9 @@ model transfer_recipient {
   user_id        String  @unique @db.VarChar(200)
   type           String  @db.VarChar(50)
   account_number String  @unique @db.VarChar(11)
+  recipient_code String  @unique @db.VarChar(50)
   bank_code      String  @db.VarChar(3)
+  bank_name      String  @db.VarChar(50)
   currency       String  @db.VarChar(5)
   created_at     String  @db.VarChar(50)
   updated_at     String? @db.VarChar(50)
@@ -54,4 +57,17 @@ model loan {
   loan_amount String @db.VarChar(50)
   due_date    String @db.VarChar(50)
   created_at  String @db.VarChar(50)
+}
+
+model transfer {
+  id           String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id      String  @unique @db.VarChar(200)
+  amount       String  @db.VarChar(50)
+  narration    String  @db.VarChar(50)
+  reference    String  @unique @db.VarChar(200)
+  verified     Boolean
+  verify_tries String? @db.VarChar(50)
+  created_at   String  @db.VarChar(50)
+  updated_at   String? @db.VarChar(50)
+  modified     String? @db.VarChar(500)
 }

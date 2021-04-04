@@ -3,13 +3,27 @@ import config from '../config';
 import { IServiceInterface, ITransferRecipient } from '../interfaces';
 import { userFunctions } from '../utils';
 
-const transferRecipientService = ({ prisma, logger }: IServiceInterface) => {
+const transferRecepientService = ({ prisma, logger }: IServiceInterface) => {
   const options = {
     headers: {
       Authorization: config.paystackApiKey,
       'Content-Type': 'application/json',
     },
   };
+
+  const checkTransferRecepient = async (user_id: string) => {
+    try {
+      const recepient = await prisma.transfer_recipient.findUnique({
+        where: {
+          user_id,
+        },
+      });
+      if (recepient) return true;
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   const verifyAccountNumber = async (data: ITransferRecipient) => {
     try {
       const user = await userFunctions.getUser(data.user_id);
@@ -26,7 +40,9 @@ const transferRecipientService = ({ prisma, logger }: IServiceInterface) => {
     }
   };
 
-  const addTransferRecipient = async (data: ITransferRecipient) => {
+  // TODO: Check similar acc number and return error
+
+  const addTransferRecepient = async (data: ITransferRecipient) => {
     try {
       const verified = await verifyAccountNumber(data);
       if (verified) {
@@ -49,10 +65,13 @@ const transferRecipientService = ({ prisma, logger }: IServiceInterface) => {
               type: 'nuban',
               account_number: data.account_number,
               bank_code: data.bank_code,
+              recipient_code: response.data.data.recipient_code,
+              bank_name: response.data.data.details.bank_name,
               currency: 'NGN',
               created_at: new Date().toISOString(),
             },
           });
+
           return newTransferRecipient;
         } else {
           return false;
@@ -61,11 +80,11 @@ const transferRecipientService = ({ prisma, logger }: IServiceInterface) => {
         return false;
       }
     } catch (error) {
-      logger.error(error);
+      console.log(error);
     }
   };
 
-  const getTransferRecipients = async () => {
+  const getTransferRecepients = async () => {
     try {
       const transferRecipients = await prisma.transfer_recipient.findMany({});
       return transferRecipients;
@@ -74,11 +93,26 @@ const transferRecipientService = ({ prisma, logger }: IServiceInterface) => {
     }
   };
 
+  const getSingleRecepient = async (user_id: string) => {
+    try {
+      const transferRecipient = await prisma.transfer_recipient.findUnique({
+        where: {
+          user_id,
+        },
+      });
+      return transferRecipient;
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return {
     verifyAccountNumber,
-    addTransferRecipient,
-    getTransferRecipients,
+    addTransferRecepient,
+    getTransferRecepients,
+    checkTransferRecepient,
+    getSingleRecepient,
   };
 };
 
-export default transferRecipientService;
+export default transferRecepientService;

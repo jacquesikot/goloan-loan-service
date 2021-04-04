@@ -11,6 +11,8 @@ exports.default = (app) => {
     app.use(endpoints_1.default.home, api_1.home);
     app.use(endpoints_1.default.cardVerfication, api_1.cardVerify);
     app.use(endpoints_1.default.transferRecipient, api_1.transferRecipient);
+    app.use(endpoints_1.default.webhook, api_1.webhook);
+    app.use(endpoints_1.default.flutterwaveWebhook, api_1.flutterwaveWebhook);
     logger_1.default.info('✌️ Routes Loaded');
 };
 //# sourceMappingURL=routes.js.map

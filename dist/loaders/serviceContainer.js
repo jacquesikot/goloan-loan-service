@@ -14,11 +14,13 @@ const serviceDependencies = {
     agenda: agenda_1.default,
 };
 const cardVerifyServiceInstance = services_1.cardVerifyService(serviceDependencies);
-const transferRecipientServiceInstance = services_1.transferRecipientService(serviceDependencies);
+const transferRecepientServiceInstance = services_1.transferRecepientService(serviceDependencies);
+const transactionServiceInstance = services_1.transactionService(serviceDependencies);
 exports.container = {
     prisma: database_1.prisma,
     logger: logger_1.default,
     cardVerifyService: cardVerifyServiceInstance,
-    transferRecipientService: transferRecipientServiceInstance,
+    transferRecepientService: transferRecepientServiceInstance,
+    transactionService: transactionServiceInstance,
 };
 //# sourceMappingURL=serviceContainer.js.map

@@ -1,6 +1,10 @@
 import logger from './logger';
 import { prisma } from './database';
-import { cardVerifyService, transferRecipientService } from '../services';
+import {
+  cardVerifyService,
+  transferRecepientService,
+  transactionService,
+} from '../services';
 import { IServiceInterface } from '../interfaces';
 import agenda from './agenda';
 
@@ -11,13 +15,15 @@ const serviceDependencies: IServiceInterface = {
 };
 
 const cardVerifyServiceInstance = cardVerifyService(serviceDependencies);
-const transferRecipientServiceInstance = transferRecipientService(
+const transferRecepientServiceInstance = transferRecepientService(
   serviceDependencies,
 );
+const transactionServiceInstance = transactionService(serviceDependencies);
 
 export const container = {
   prisma: prisma,
   logger: logger,
   cardVerifyService: cardVerifyServiceInstance,
-  transferRecipientService: transferRecipientServiceInstance,
+  transferRecepientService: transferRecepientServiceInstance,
+  transactionService: transactionServiceInstance,
 };

@@ -1,15 +1,16 @@
 import express from 'express';
 
 import { container } from '../../loaders';
-import { responseEnvelope, errorEnvelope } from '../../constants';
+import { responseEnvelope, errorEnvelope, errorMessage } from '../../constants';
 import { transferRecepientValidation } from '../../validation';
+import { userFunctions } from '../../utils';
 
 const router = express.Router();
 
-const { transferRecipientService } = container;
+const { transferRecepientService } = container;
 
 router.get('/', async (_req, res) => {
-  const response = await transferRecipientService.getTransferRecipients();
+  const response = await transferRecepientService.getTransferRecepients();
   res.send(responseEnvelope.collection(response));
 });
 
@@ -18,7 +19,29 @@ router.post('/', async (req, res) => {
   if (validation.error)
     return res.status(400).send(errorEnvelope.invalidRequest(validation.error));
 
-  const response = await transferRecipientService.addTransferRecipient(
+  const user = await userFunctions.getUser(req.body.user_id);
+  if (!user)
+    return res
+      .status(400)
+      .send(errorEnvelope.genericError(errorMessage.userDoesNotExist, 400));
+
+  const recepient = await transferRecepientService.checkTransferRecepient(
+    req.body.user_id,
+  );
+  if (recepient)
+    return res
+      .status(400)
+      .send(
+        errorEnvelope.genericError(errorMessage.transferRecepientExists, 400),
+      );
+
+  const account = await transferRecepientService.verifyAccountNumber(req.body);
+  if (!account)
+    return res
+      .status(400)
+      .send(errorEnvelope.genericError(errorMessage.wrongAccountDetails, 400));
+
+  const response = await transferRecepientService.addTransferRecepient(
     req.body,
   );
 

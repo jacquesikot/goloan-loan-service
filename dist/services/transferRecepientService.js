@@ -27,21 +27,6 @@ const transferRecepientService = ({ prisma, logger }) => {
             logger.error(error);
         }
     };
-    const addPaystackRecepient = async (data) => {
-        try {
-            const paystackData = {
-                type: 'nuban',
-                name: data.user_id,
-                account_number: data.account_number,
-                bank_code: data.bank_code,
-            };
-            await axios_1.default.post(config_1.default.paystackUrls.transferRecipient, paystackData, options);
-            return;
-        }
-        catch (error) {
-            logger.error(error);
-        }
-    };
     const verifyAccountNumber = async (data) => {
         try {
             const user = await utils_1.userFunctions.getUser(data.user_id);
@@ -55,6 +40,7 @@ const transferRecepientService = ({ prisma, logger }) => {
             logger.error(error);
         }
     };
+    // TODO: Check similar acc number and return error
     const addTransferRecepient = async (data) => {
         try {
             const verified = await verifyAccountNumber(data);
@@ -73,11 +59,12 @@ const transferRecepientService = ({ prisma, logger }) => {
                             type: 'nuban',
                             account_number: data.account_number,
                             bank_code: data.bank_code,
+                            recipient_code: response.data.data.recipient_code,
+                            bank_name: response.data.data.details.bank_name,
                             currency: 'NGN',
                             created_at: new Date().toISOString(),
                         },
                     });
-                    await addPaystackRecepient(data);
                     return newTransferRecipient;
                 }
                 else {
@@ -89,7 +76,7 @@ const transferRecepientService = ({ prisma, logger }) => {
             }
         }
         catch (error) {
-            logger.error(error);
+            console.log(error);
         }
     };
     const getTransferRecepients = async () => {
@@ -101,12 +88,26 @@ const transferRecepientService = ({ prisma, logger }) => {
             logger.error(error);
         }
     };
+    const getSingleRecepient = async (user_id) => {
+        try {
+            const transferRecipient = await prisma.transfer_recipient.findUnique({
+                where: {
+                    user_id,
+                },
+            });
+            return transferRecipient;
+        }
+        catch (error) {
+            logger.error(error);
+        }
+    };
     return {
         verifyAccountNumber,
         addTransferRecepient,
         getTransferRecepients,
         checkTransferRecepient,
+        getSingleRecepient,
     };
 };
 exports.default = transferRecepientService;
-//# sourceMappingURL=transferRecipientService.js.map
+//# sourceMappingURL=transferRecepientService.js.map

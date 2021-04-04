@@ -10,7 +10,8 @@ const userFunctions = () => {
     const getUser = async (user_id) => {
         try {
             const user = await axios_1.default.get(config_1.default.goloanUserService + `/${user_id}`);
-            return user.data.data;
+            if (user)
+                return user.data.data;
         }
         catch (error) {
             loaders_1.logger.error(error);

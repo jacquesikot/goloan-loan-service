@@ -1,2 +1,3 @@
 export { default as cardVerifyService } from './cardVerifyService';
-export { default as transferRecipientService } from './transferRecipientService';
+export { default as transferRecepientService } from './transferRecepientService';
+export { default as transactionService } from './transactionService';
